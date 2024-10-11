@@ -36,7 +36,7 @@ export default function Home() {
       <div className="my-4">
         <h2 className="text-lg font-bold">Hey buddy! How are you?</h2>
         {/* //TODO: overflow  */}
-        <div className="flex gap-2 ">
+        <div className="flex gap-2 overflow-x-auto hide-scrollbar px-4 mx-2 snap-x">
           {days.map((dayObj, index) => (
             <DayComponent
               key={index}
