@@ -1,8 +1,9 @@
-'use client'
+"use client";
 import { Badge } from "@/components/ui/badge";
 import ListComponent from "@/components/custom/list_component";
 import DayComponent from "@/components/custom/day_component";
 import { useEffect, useState } from "react";
+import Pagination from "@/components/custom/Pagination";
 
 const getWeekday = (date: Date) => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -13,6 +14,8 @@ export default function Home() {
   const [days, setDays] = useState<
     { day: number; weekday: string; active: boolean }[]
   >([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const generatedDays = [];
@@ -30,6 +33,50 @@ export default function Home() {
     }
     setDays(generatedDays);
   }, []);
+
+  const series = [
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+    {
+      title: "Rick and Morty: The Anime",
+      released: true,
+      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
+    },
+  ];
+
+  const totalPages = Math.ceil(series.length / itemsPerPage);
+  const paginatedSeries = series.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="p-4">
@@ -60,30 +107,18 @@ export default function Home() {
 
       <div className="my-4">
         <h2 className="text-lg font-bold">Series</h2>
-        <ListComponent
-          title="Rick and Morty: The Anime"
-          released={true}
-          image="https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg"
-        />
-        <ListComponent
-          title="Rick and Morty: The Anime"
-          released={false}
-          image="https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg"
-        />
-        <ListComponent
-          title="Rick and Morty: The Anime"
-          released={true}
-          image="https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg"
-        />
-        <ListComponent
-          title="Rick and Morty: The Anime"
-          released={true}
-          image="https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg"
-        />
-        <ListComponent
-          title="Rick and Morty: The Anime"
-          released={true}
-          image="https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg"
+        {paginatedSeries.map((item, index) => (
+          <ListComponent
+            key={index}
+            title={item.title}
+            released={item.released}
+            image={item.image}
+          />
+        ))}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </div>
     </div>

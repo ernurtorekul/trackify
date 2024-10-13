@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Link from "next/link";
-import { HeartIcon, HomeIcon, SearchIcon } from "lucide-react";
+import "./navbar/Navbar";
+import Navbar from "./navbar/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,25 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <div className="fixed bottom-0 w-full bg-black py-6 text-white">
-          <nav className="flex justify-evenly">
-            <Link href="/">
-              <div>
-                <HomeIcon size={24} />
-              </div>
-            </Link>
-            <Link href="/search">
-              <div>
-                <SearchIcon size={24} color="grey" />
-              </div>
-            </Link>
-            <Link href="/favorites">
-              <div>
-                <HeartIcon size={24} color="grey" />
-              </div>
-            </Link>
-          </nav>
-        </div>
+        <Navbar />
       </body>
     </html>
   );
