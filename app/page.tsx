@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import ListComponent from "@/components/custom/list_component";
 import DayComponent from "@/components/custom/day_component";
 import { useEffect, useState } from "react";
-import Pagination from "@/components/custom/Pagination";
+import Pagination from "@/components/custom/pagination";
 
 const getWeekday = (date: Date) => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -36,36 +36,43 @@ export default function Home() {
 
   const series = [
     {
+      id: 1,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 2,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 3,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 4,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 5,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 6,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
     },
     {
+      id: 7,
       title: "Rick and Morty: The Anime",
       released: true,
       image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
@@ -79,11 +86,13 @@ export default function Home() {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 pb-16">
       <div className="my-4">
-        <h2 className="text-lg font-bold">Hey buddy! How are you?</h2>
+        <h2 className="text-2xl flex justify-center font-bold mb-4">
+          Welcome to TrackIfy
+        </h2>
         {/* //TODO: overflow  */}
-        <div className="flex gap-2 overflow-x-auto hide-scrollbar px-4 mx-2 snap-x">
+        <div className="flex gap-2 overflow-x-auto hide-scrollbar px-4 snap-x ">
           {days.map((dayObj, index) => (
             <DayComponent
               key={index}
@@ -97,19 +106,26 @@ export default function Home() {
 
       <div className="my-4">
         <h2 className="text-lg font-bold">Genres</h2>
-        <div className="flex gap-2 my-2">
-          <Badge>All</Badge>
-          <Badge variant="outline">Action</Badge>
-          <Badge variant="outline">Adventure</Badge>
-          <Badge variant="outline">Strategy</Badge>
+        <div className="flex gap-2 my-2 w-fit h-8">
+          <Badge className="text-md">All</Badge>
+          <Badge className="text-md" variant="outline">
+            Action
+          </Badge>
+          <Badge className="text-md" variant="outline">
+            Adventure
+          </Badge>
+          <Badge className="text-md" variant="outline">
+            Strategy
+          </Badge>
         </div>
       </div>
 
       <div className="my-4">
         <h2 className="text-lg font-bold">Series</h2>
-        {paginatedSeries.map((item, index) => (
+        {paginatedSeries.map((item) => (
           <ListComponent
-            key={index}
+            key={item.id}
+            id={item.id}
             title={item.title}
             released={item.released}
             image={item.image}
