@@ -8,7 +8,7 @@ export default function DayComponent({
   active?: boolean
 }) {
   return (
-    <div className='flex gap-2 my-2'>
+    <div className='flex my-2 flex-shrink-0 w-[50px] sm:w-[70px] lg:w-[80px]'>
       <div
         className={`${active ? 'bg-black text-slate-200' : 'bg-slate-200 text-black'} py-2 px-1 rounded-full flex flex-col items-center cursor-pointer`}
       >
