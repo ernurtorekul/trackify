@@ -2,8 +2,17 @@
 import { ChevronLeft, SaveIcon } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { Button } from "@/components/ui/button";
 import { series } from "@/app/data/series";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Series {
   id: number;
@@ -65,14 +74,15 @@ function Details() {
       </div>
 
       <div className="mt-8 px-4 space-x-3 flex items-center justify-center">
-        <button className="px-6 py-2 bg-gradient-to-r from-gray-300 to-gray-600 text-white rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all">
+        {/* <button className="px-6 py-2 bg-gradient-to-r from-gray-300 to-gray-600 text-white rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all">
           Watch Now
-        </button>
+        </button> */}
+        <Button className="bg-gray-600 rounded-full px-6">Watch Now</Button>
         <div>|</div>
         <div className="flex items-center space-x-1 cursor-pointer">
           <SaveIcon
             size={25}
-            className="text-gray-800 hover:text-blue-500 transition-all"
+            className="text-gray-700 hover:text-blue-500 transition-all"
           />
         </div>
       </div>
@@ -103,22 +113,35 @@ function Details() {
         </div>
 
         <div className="overflow-x-auto my-4">
-          <table className="min-w-full table-auto border-separate border-spacing-2">
-            <thead>
-              <tr className="bg-gray-200 text-gray-800">
-                <th className="px-4 py-2 text-left">Number of Series</th>
-                <th className="px-4 py-2 text-left">Premiere Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {selectedSeries.episodes && Array.isArray(selectedSeries.episodes) && selectedSeries.episodes.map((episode: Episode) => (
-                <tr className="border-b border-gray-300" key={episode.number}>
-                  <td className="px-4 py-2">{episode.number}</td>
-                  <td className="px-4 py-2">{episode.premiereDate}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table className="min-w-full table-auto border-separate border-spacing-2">
+            <TableHeader>
+              <TableRow className="bg-gray-200 text-gray-900">
+                <TableHead className="px-4 py-2 text-left">
+                  Number of Series
+                </TableHead>
+                <TableHead className="px-4 py-2 text-left">
+                  Premiere Date
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {selectedSeries.episodes &&
+                Array.isArray(selectedSeries.episodes) &&
+                selectedSeries.episodes.map((episode: Episode) => (
+                  <TableRow
+                    className="border-b border-gray-300"
+                    key={episode.number}
+                  >
+                    <TableCell className="px-4 py-2">
+                      {episode.number}
+                    </TableCell>
+                    <TableCell className="px-4 py-2">
+                      {episode.premiereDate}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
