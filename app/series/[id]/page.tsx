@@ -1,41 +1,43 @@
 "use client";
 import { ChevronLeft, SaveIcon } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import { series } from "@/app/data/series";
+
+interface Series {
+  id: number;
+  title: string;
+  released: boolean;
+  image: string;
+  description: string;
+  releaseDate: string;
+  studio: string;
+  genre: string;
+  episodes: Episode[];
+}
+
+interface Episode {
+  number: number;
+  premiereDate: string;
+}
+
 function Details() {
-  const seriesData = [
-    {
-      id: 1,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      releaseDate: "14th of October",
-      studio: "Anilibria",
-      genre: "Animation",
-      episodes: [
-        { number: 1, premiereDate: "14th October" },
-        { number: 2, premiereDate: "21st October" },
-        { number: 3, premiereDate: "28th October" },
-      ],
-    },
-  ];
-
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams();
 
-  const [series, setSeries] = useState<null | (typeof seriesData)[0]>(null);
+  const [selectedSeries, setSelectedSeries] = useState<Series | null>(null);
 
   useEffect(() => {
     if (id) {
-      const selectedSeries = seriesData.find((item) => item.id === Number(id));
-      setSeries(selectedSeries ?? null);
+      const seriesDetail = series.find((s) => s.id === Number(id));
+      if (seriesDetail) {
+        setSelectedSeries(seriesDetail);
+      }
     }
   }, [id]);
 
-  if (!series) {
+  if (!selectedSeries) {
     return <div>loading ...</div>;
   }
 
@@ -53,12 +55,12 @@ function Details() {
         </div>
         <div
           className="w-full h-64 bg-cover bg-center rounded-t-3xl"
-          style={{ backgroundImage: `url(${series.image})` }}
+          style={{ backgroundImage: `url(${selectedSeries.image})` }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-500 opacity-70 rounded-t-3xl"></div>
         </div>
         <div className="absolute bottom-6 left-6 z-10 text-white font-bold text-3xl">
-          {series.title}
+          {selectedSeries.title}
         </div>
       </div>
 
@@ -76,26 +78,26 @@ function Details() {
       </div>
 
       <div className="mt-6 px-6 py-4 bg-white rounded-2xl shadow-lg space-y-4">
-        <p className="text-gray-600 text-sm">{series.description}</p>
+        <p className="text-gray-600 text-sm">{selectedSeries.description}</p>
 
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-semibold">Series Information</h2>
           <div className="flex flex-col gap-1">
             <div>
               <strong>Original Name:</strong>
-              {series.title}
+              {selectedSeries.title}
             </div>
             <div>
               <strong>Release Date:</strong>
-              {series.releaseDate}
+              {selectedSeries.releaseDate}
             </div>
             <div>
               <strong>Studio:</strong>
-              {series.studio}
+              {selectedSeries.studio}
             </div>
             <div>
               <strong>Genre:</strong>
-              {series.genre}
+              {selectedSeries.genre}
             </div>
           </div>
         </div>
@@ -109,7 +111,7 @@ function Details() {
               </tr>
             </thead>
             <tbody>
-              {series.episodes.map((episode) => (
+              {selectedSeries.episodes && Array.isArray(selectedSeries.episodes) && selectedSeries.episodes.map((episode: Episode) => (
                 <tr className="border-b border-gray-300" key={episode.number}>
                   <td className="px-4 py-2">{episode.number}</td>
                   <td className="px-4 py-2">{episode.premiereDate}</td>

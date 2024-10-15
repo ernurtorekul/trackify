@@ -5,6 +5,8 @@ import DayComponent from "@/components/custom/day_component";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/custom/pagination";
 
+import {series} from '@/app/data/series'
+
 const getWeekday = (date: Date) => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return weekdays[date.getDay()];
@@ -33,51 +35,6 @@ export default function Home() {
     }
     setDays(generatedDays);
   }, []);
-
-  const series = [
-    {
-      id: 1,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 2,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 3,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 4,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 5,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 6,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-    {
-      id: 7,
-      title: "Rick and Morty: The Anime",
-      released: true,
-      image: "https://data-vykhoda.ru/wp-content/uploads/2024/08/15.jpg",
-    },
-  ];
 
   const totalPages = Math.ceil(series.length / itemsPerPage);
   const paginatedSeries = series.slice(
