@@ -16,11 +16,14 @@ export default function Home() {
     { day: number; weekday: string; active: boolean }[]
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   const [series, setSeries] = useState<any[]>([]);
+  const [seriesCount, setSeriesCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(seriesCount / itemsPerPage);
 
   useEffect(() => {
     const generatedDays = [];
@@ -50,25 +53,24 @@ export default function Home() {
         }
         const data = await response.json();
         setSeries(data.data);
-        setLoading(false)
+        setSeriesCount(data.count);
+        setLoading(false);
       } catch (err: any) {
         setError(err.message);
-      } finally {
         setLoading(false);
       }
     };
     fetchSeries();
   }, []);
 
-  const totalPages = Math.ceil(series.length / itemsPerPage);
   const paginatedSeries = series.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  if (loading) return <p>loading ...</p>
+  if (loading) return <p>loading ...</p>;
 
-  if(error) return <p>error: {error}</p>
+  if (error) return <p>error: {error}</p>;
 
   return (
     <div className="p-4 pb-16">
@@ -107,16 +109,20 @@ export default function Home() {
 
       <div className="my-4">
         <h2 className="text-lg font-bold">Series</h2>
-        {paginatedSeries.map((item) => (
-          <ListComponent
-            key={item.id}
-            id={item.id}
-            title={item.name}
-            released={item.releaseDate}
-            genres={item.genres}
-            image={item.imageUrl}
-          />
-        ))}
+        {paginatedSeries.length > 0 ? (
+          paginatedSeries.map((item) => (
+            <ListComponent
+              key={item.id}
+              id={item.id}
+              title={item.name}
+              released={item.releaseDate}
+              genres={item.genres}
+              image={item.imageUrl}
+            />
+          ))
+        ) : (
+          <p>no series found</p>
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
