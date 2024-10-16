@@ -1,29 +1,9 @@
-class Endpoint {
-  baseUrl: string;
+export class Endpoint {
+    static baseUrl: string = 'https://trackify-node-production.up.railway.app/'
   
-  constructor() {
-    this.baseUrl = "https://your-backend-url.com/api";
-  }
-
-  seriesCreate(): string {
-    return `${this.baseUrl}/series/create`;
-  }
-
-  seriesGetAll(): string {
-    return `${this.baseUrl}/series/get/all`;
-  }
-
-  seriesGet(id: string | number): string {
-    return `${this.baseUrl}/series/get/${id}`;
-  }
-
-  seriesUpdate(id: string | number): string {
-    return `${this.baseUrl}/series/update/${id}`;
-  }
-
-  seriesDelete(id: string | number): string {
-    return `${this.baseUrl}/series/delete/${id}`;
-  }
+    static seriesGetAll: string = '/series/'
+    static seriesGet = (id: number) => `/series/${id}`
+    static parsing: string = '/parsing/'
 }
 
-export default new Endpoint();
+export default Endpoint;
