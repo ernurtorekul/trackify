@@ -3,5 +3,5 @@ export class Endpoint {
 
   static seriesGetAll: string = "series/";
   static seriesGet = (id: number) => `series/${id}`;
-  static parsing: string = "parsing/";
+  static parsing: string = "parsing?href=";
 }

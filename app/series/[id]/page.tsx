@@ -9,7 +9,7 @@ import { Endpoint } from "@/app/config/Endpoint";
 import {
   Table,
   TableBody,
-  TableCaption,
+  // TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -46,8 +46,14 @@ function Details() {
   useEffect(() => {
     const fetchSeries = async () => {
       if (!id) return;
-      const url = `${Endpoint.baseUrl}${Endpoint.seriesGet(Number(id))}`;
-      console.log("Constructed URL:", url);
+      // const url = `${Endpoint.baseUrl}${Endpoint.parsing}${Endpoint.seriesGet(Number(id))}`;
+      const seriesData = await fetch(
+        `${Endpoint.baseUrl}${Endpoint.seriesGet(Number(id))}`
+      );
+      const seriesJson = await seriesData.json();
+      const hrefValue = seriesJson.href;
+      const url = `${Endpoint.baseUrl}${Endpoint.parsing}${encodeURIComponent(hrefValue)}`;
+
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -57,8 +63,12 @@ function Details() {
         console.log("API Response Data:", data);
         setSeries(data);
         setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("unknown error");
+        }
       } finally {
         setLoading(false);
       }
@@ -112,7 +122,12 @@ function Details() {
         {/* <button className="px-6 py-2 bg-gradient-to-r from-gray-300 to-gray-600 text-white rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition-all">
           Watch Now
         </button> */}
-        <Button className="bg-gray-600 rounded-full px-6" onClick={() => window.open(series.trailerUrl, "_blank")}>Watch Now</Button>
+        <Button
+          className="bg-gray-600 rounded-full px-6"
+          onClick={() => window.open(series.trailerUrl, "_blank")}
+        >
+          Watch Now
+        </Button>
         <div>|</div>
         <div className="flex items-center space-x-1 cursor-pointer">
           <SaveIcon
@@ -168,7 +183,7 @@ function Details() {
                     key={episode.numberEpisode}
                   >
                     <TableCell className="px-4 py-2">
-                      {episode.numberEpisode+1}
+                      {episode.numberEpisode + 1}
                     </TableCell>
                     <TableCell className="px-4 py-2">
                       {/* {episode.premiereDate} */}
