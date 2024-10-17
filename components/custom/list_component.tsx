@@ -1,11 +1,10 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
 import Image from "next/image";
-import { series } from "@/app/data/series";
 export default function ListComponent({
   id,
   title,
-  released,
+  // released,
   genres,
   image,
 }: {

@@ -9,7 +9,7 @@ import { Endpoint } from "@/app/config/Endpoint";
 import {
   Table,
   TableBody,
-  TableCaption,
+  // TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -63,8 +63,12 @@ function Details() {
         console.log("API Response Data:", data);
         setSeries(data);
         setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("unknown error");
+        }
       } finally {
         setLoading(false);
       }

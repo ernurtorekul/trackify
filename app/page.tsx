@@ -11,13 +11,22 @@ const getWeekday = (date: Date) => {
   return weekdays[date.getDay()];
 };
 
+interface Series {
+  id: number;
+  name: string;
+  releaseDate: boolean;
+  genres: string;
+  imageUrl: string
+}
+
 export default function Home() {
   const [days, setDays] = useState<
     { day: number; weekday: string; active: boolean }[]
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [series, setSeries] = useState<any[]>([]);
+  const [series, setSeries] = useState<Series[]>([]);
+
   const [seriesCount, setSeriesCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,8 +64,12 @@ export default function Home() {
         setSeries(data.data);
         setSeriesCount(data.count);
         setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
         setLoading(false);
       }
     };
