@@ -6,11 +6,13 @@ export default function ListComponent({
   id,
   title,
   released,
+  genres,
   image,
 }: {
   id: number;
   title: string;
   released: boolean;
+  genres: string,
   image: string;
 }) {
   return (
@@ -25,10 +27,10 @@ export default function ListComponent({
         />
         <div>
           <AlertTitle className="text-lg font-bold">{title}</AlertTitle>
-          <AlertDescription
-            className={`text-sm ${released ? "text-green-600" : "text-red-600"}`}
+          <AlertDescription>{genres}
+             {/* className={`text-sm ${released ? "text-green-600" : "text-red-600"}`}
           >
-            {released ? "Released" : "Not released"}
+             {released ? "Released" : "Not released"} */}
           </AlertDescription>
         </div>
       </Alert>

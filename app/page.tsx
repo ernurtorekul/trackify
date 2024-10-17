@@ -4,8 +4,7 @@ import ListComponent from "@/components/custom/list_component";
 import DayComponent from "@/components/custom/day_component";
 import { useEffect, useState } from "react";
 import Pagination from "@/components/custom/pagination";
-
-import {series} from '@/app/data/series'
+import { Endpoint } from "./config/Endpoint";
 
 const getWeekday = (date: Date) => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -17,7 +16,14 @@ export default function Home() {
     { day: number; weekday: string; active: boolean }[]
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+
+  const [series, setSeries] = useState<any[]>([]);
+  const [seriesCount, setSeriesCount] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(seriesCount / itemsPerPage);
 
   useEffect(() => {
     const generatedDays = [];
@@ -36,11 +42,35 @@ export default function Home() {
     setDays(generatedDays);
   }, []);
 
-  const totalPages = Math.ceil(series.length / itemsPerPage);
+  useEffect(() => {
+    const fetchSeries = async () => {
+      try {
+        const response = await fetch(
+          `${Endpoint.baseUrl}${Endpoint.seriesGetAll}`
+        );
+        if (!response.ok) {
+          throw new Error("failed fetching series");
+        }
+        const data = await response.json();
+        setSeries(data.data);
+        setSeriesCount(data.count);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchSeries();
+  }, []);
+
   const paginatedSeries = series.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  if (loading) return <p>loading ...</p>;
+
+  if (error) return <p>error: {error}</p>;
 
   return (
     <div className="p-4 pb-16">
@@ -61,7 +91,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="my-4">
+      {/* <div className="my-4">
         <h2 className="text-lg font-bold">Genres</h2>
         <div className="flex gap-2 my-2 w-fit h-8">
           <Badge className="text-md">All</Badge>
@@ -75,19 +105,24 @@ export default function Home() {
             Strategy
           </Badge>
         </div>
-      </div>
+      </div> */}
 
       <div className="my-4">
         <h2 className="text-lg font-bold">Series</h2>
-        {paginatedSeries.map((item) => (
-          <ListComponent
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            released={item.released}
-            image={item.image}
-          />
-        ))}
+        {paginatedSeries.length > 0 ? (
+          paginatedSeries.map((item) => (
+            <ListComponent
+              key={item.id}
+              id={item.id}
+              title={item.name}
+              released={item.releaseDate}
+              genres={item.genres}
+              image={item.imageUrl}
+            />
+          ))
+        ) : (
+          <p>no series found</p>
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
